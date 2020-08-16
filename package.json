@@ -1,0 +1,25 @@
+{
+  "name": "in-path",
+  "version": "1.0.0",
+  "description": "Check if file ( executable ) exists in PATH",
+  "main": "dist/index.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon --watch src/ --ext ts --exec 'tsc && node dist/index.js'",
+    "start": "node dist/index.js",
+    "vt": "vtexec 'node index.js'"
+  },
+  "keywords": [
+    "in path",
+    "file in path",
+    "executable exists",
+    "executable in path"
+  ],
+  "author": "Ando",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^14.0.27",
+    "nodemon": "^2.0.4"
+  }
+}
