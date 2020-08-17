@@ -1,5 +1,5 @@
-# VTexec
-VTexec allows you to run arbitrary commands from Independent [**Terminal Emulators**][VT] of target OS's. It also provides configurable function which will automatically determine **Terminal** to run command from, depending on Target OS. And one of the most useful features is that by default Terminal will not closed automaticaly after it finishe's command execution.
+# OpenTerm
+OpenTerm allows you to run arbitrary commands from Independent [**Terminal Emulators**][VT] of target OS's. It also provides configurable function which will automatically determine **Terminal** to run command from, depending on Target OS. And one of the most useful features is that by default Terminal will not closed automaticaly after it finishe's command execution.
 
 ## Usage
 This package consists of **2 parts**.
@@ -9,7 +9,7 @@ This package consists of **2 parts**.
 ### Part 1
 First Part exported as **"VT"** consists of distributed by platforms functions for running different Terminals. You cant use them to run command in a separate Terminal:
 ```javascript
-const { VT } = require('./VTexec')
+const { VT } = require('./open-term')
 VT.linux.xterm('ls -l') // Runs "ls -l" command in xterm.
 VT.linux.guake('ls -l') // Runs "ls -l" command in guake.
 ```
