@@ -1,8 +1,8 @@
 import { SpawnOptions, ChildProcess } from 'child_process'
+import * as VT from './VT'
 
 /**Defines supported platforms. */
-export type VTPlatforms = (typeof VTPlatforms)[number]
-export const VTPlatforms: ['linux', 'win32'] = ['linux', 'win32']
+export type VTPlatforms = (keyof typeof VT)
 
 /**
  * Run command from Terminal.

@@ -1,4 +1,4 @@
-import { VTPlatforms } from '../../VT'
+import { VTPlatforms, VT } from '../../VT'
 import {
     VTexecInclusion,
     VTexecOptions,
@@ -30,7 +30,7 @@ export default function setInclusionDefaults(options = {} as VTexecOptions): Req
     let {
         linux = linuxInclusionDefaults,
         win32 = win32InclusionDefaults,
-        default: vtFallbackPlatforms = VTPlatforms, // undefined - lookall, null - throw NotFound, array - look in array
+        default: vtFallbackPlatforms = Object.keys(VT) as VTPlatforms[], // undefined - lookall, null - throw NotFound, array - look in array
         ...restOptions
     } = options
     if (linux !== null) setLinuxInclusionDefaults(linux)

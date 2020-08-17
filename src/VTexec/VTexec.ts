@@ -54,7 +54,7 @@ export default function VTexec(command: string, options?: VTexecOptions): any {
     if (optionsWithDefaults.default === null) throw new Error(`Platform: ${platform} is not supported.`)
 
     for (const fallbackPlatform of optionsWithDefaults.default) {
-        if (VTPlatforms.includes(fallbackPlatform)) {
+        if (Object.keys(VT).includes(fallbackPlatform)) {
             const vtList = inclusionToList(inclusionDefaults[fallbackPlatform])
             try {
                 return findVt(fallbackPlatform, vtList)
