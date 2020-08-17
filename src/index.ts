@@ -7,4 +7,6 @@ export {
     VTexec,
     VTexecInclusion,
     VTexecOptions,
+    LinuxTerminals,
+    Win32Terminals,
 } from './VTexec'
