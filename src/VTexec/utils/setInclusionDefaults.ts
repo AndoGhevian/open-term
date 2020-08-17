@@ -24,6 +24,7 @@ function setWin32InclusionDefaults(win32Inclusion: VTexecInclusion<'win32'>): vo
 }
 
 /**
+ * This function Set Default values for all missing properties of VTexecInclusion options provided to VTexec.
  * @returns **VTexecOptions** with filled default values.
  */
 export default function setInclusionDefaults(options = {} as VTexecOptions): Required<VTexecOptions> {

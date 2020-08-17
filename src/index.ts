@@ -9,4 +9,5 @@ export {
     VTexecOptions,
     LinuxTerminals,
     Win32Terminals,
+    inclusionDefaults,
 } from './VTexec'

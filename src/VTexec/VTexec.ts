@@ -17,6 +17,14 @@ import * as inclusionDefaults from './inclusionDefaults'
 /**This function designed to capture virtual terminal startup errors. */
 const omitError = (error: any) => null
 
+/**
+ * This function automaticaly find and run terminal with provided command.
+ * @param command - String representation of command.
+ * @param options - Terminal searching algorithm configuration options.
+ * @defaultValue `{ 
+ * linux: linuxInclusionDefaults, win32: win32InclusionDefaults
+ * }`
+ */
 export default function VTexec(command: string): ChildProcess
 export default function VTexec(command: string, options?: VTexecOptions): ChildProcess
 export default function VTexec(command: string, options?: VTexecOptions): any {
@@ -28,8 +36,8 @@ export default function VTexec(command: string, options?: VTexecOptions): any {
             const terminalExecutor = supportedVtMap[vt]
             if (terminalExecutor) {
                 const termProc = terminalExecutor(command)
-                if(termProc.pid) return termProc
-                
+                if (termProc.pid) return termProc
+
                 termProc.on('error', omitError)
             }
         }

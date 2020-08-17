@@ -1,5 +1,5 @@
 {
-  "name": "vtexec",
+  "name": "open-term",
   "version": "1.0.0",
   "description": "Start command in new terminal.",
   "main": "dist/index.js",
