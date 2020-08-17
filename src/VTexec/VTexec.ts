@@ -13,6 +13,7 @@ import {
 
 import * as inclusionDefaults from './inclusionDefaults'
 
+
 /**This function designed to capture virtual terminal startup errors. */
 const omitError = (error: any) => null
 
