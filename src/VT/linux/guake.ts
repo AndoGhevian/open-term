@@ -3,28 +3,23 @@ import { spawn, SpawnOptions } from 'child_process'
 import { TerminalExecutor } from '../types'
 
 /**Run command from Guake Terminal. */
-const runGuake: TerminalExecutor = (command: string, terminalArgs: string[] = [], {
+const runGuake: TerminalExecutor = (command: string, terminalArgs, {
     detached = true,
     stdio = 'ignore',
     ...restSpawnOptions
 } = {} as SpawnOptions) => {
     const cwd = process.cwd()
 
-    const args = ['--show', '-n', cwd, '--execute-command', command]
-    if (terminalArgs.includes('--hide') || terminalArgs.includes('--show')) {
-        args.splice(0, 1)
-    }
-    if (terminalArgs.includes('-n') || terminalArgs.includes('--new-tab')) {
-        const nIndex = args.indexOf('-n')
-        args.splice(nIndex, 2)
-    }
-    if (terminalArgs.includes('-e') || terminalArgs.includes('--execute-command')) {
-        const eIndex = args.indexOf('-e')
-        args.splice(eIndex, 2)
+    let args = ['--show', '-n', cwd]
+    if(terminalArgs) {
+        args = [...terminalArgs]
     }
 
-    args.splice(0, 0, ...terminalArgs)
-    console.log(args)
+    if (!args.includes('-e') && !args.includes('--execute-command')) {
+        args.push('--execute-command', command)
+    }
+
+    // console.log(args)
     const cmdProcess = spawn('guake', args, {
         detached,
         stdio,
@@ -38,8 +33,12 @@ export default runGuake
 
 
 // // test
-// const command = 'node tests/test2.js'
-// const cmdProcess = runGuake(command)
+// const path = require('path')
+// const testPath = path.join(__dirname, './test.js')
+// //
+// console.log('aaaaaaa')
+// const command = `node ${testPath}`
+// const cmdProcess = runGuake(command, [])
 // if (!cmdProcess.pid) {
 //     throw new Error('Cant start process.')
 // }

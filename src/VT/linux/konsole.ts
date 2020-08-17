@@ -3,29 +3,23 @@ import { spawn, SpawnOptions } from 'child_process'
 import { TerminalExecutor } from '../types'
 
 /**Run command from KDE-Konsole Terminal. */
-const runKonsole: TerminalExecutor = (command: string, terminalArgs: string[] = [], {
+const runKonsole: TerminalExecutor = (command: string, terminalArgs, {
     detached = true,
     stdio = 'ignore',
     ...restSpawnOptions
 } = {} as SpawnOptions) => {
     const cwd = process.cwd()
 
-    const args = ['--hold', '--workdir', cwd, '-e', command]
-    if (terminalArgs.includes('--hold') || terminalArgs.includes('--noclose')) {
-        args.splice(0, 1)
-    }
-    if (terminalArgs.includes('--workdir')) {
-        const workdirIndex = args.indexOf('--workdir')
-        args.splice(workdirIndex, 2)
-    }
-    if (terminalArgs.includes('-e')) {
-        const eIndex = args.indexOf('-e')
-        args.splice(eIndex, 2, ...terminalArgs)
-    } else {
-        args.splice(0, 0, ...terminalArgs)
+    let args = ['--hold', '--workdir', cwd]
+    if (terminalArgs) {
+        args = [...terminalArgs]
     }
 
-    console.log(args)
+    if (!args.includes('-e')) {
+        args.push('-e', command)
+    }
+
+    // console.log(args)
     const cmdProcess = spawn('konsole', args, {
         detached,
         stdio,
@@ -38,9 +32,13 @@ export default runKonsole
 
 
 
-// // test
-// const command = 'node tests/test2.js'
-// const cmdProcess = runKonsole(command)
+// test
+// const path = require('path')
+// const testPath = path.join(__dirname, './test.js')
+// //
+// console.log('aaaaaaa')
+// const command = `node ${testPath}`
+// const cmdProcess = runKonsole(command, ['--hold', '-e', 'ls'])
 // if(!cmdProcess.pid) {
 //     throw new Error('Konsole command not found.')
 // }

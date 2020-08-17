@@ -1,20 +1,19 @@
 {
-  "name": "in-path",
+  "name": "vtexec",
   "version": "1.0.0",
-  "description": "Check if file ( executable ) exists in PATH",
+  "description": "Start command in new terminal.",
   "main": "dist/index.js",
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --watch src/ --ext ts --exec 'tsc && node dist/index.js'",
-    "start": "node dist/index.js",
-    "vt": "vtexec 'node index.js'"
+    "start": "node dist/index.js"
   },
   "keywords": [
-    "in path",
-    "file in path",
-    "executable exists",
-    "executable in path"
+    "open terminal",
+    "terminal",
+    "virtual terminal",
+    "terminal emulator"
   ],
   "author": "Ando",
   "license": "ISC",

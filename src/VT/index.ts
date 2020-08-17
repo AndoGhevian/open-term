@@ -1,2 +1,5 @@
-export * as linux from './linux'
-export * as windows from './windows'
+export * as VT from './VT'
+export {
+    VTPlatforms,
+    TerminalExecutor,
+} from './types'
