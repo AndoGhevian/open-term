@@ -1,7 +1,7 @@
 import { VTexecInclusion } from "./types"
 
 /**
- * Virtual Terminal search algorithm defaults for Linux platform.
+ * Virtual Terminal search algorithm default configurations for Linux platform.
  */
 export const linux: Required<VTexecInclusion<'linux'>> = {
     priorityTerms: ['xterm', 'guake', 'konsole', 'xfce'],
@@ -10,7 +10,7 @@ export const linux: Required<VTexecInclusion<'linux'>> = {
 }
 
 /**
- * Virtual Terminal search algorithm defaults for win32 platform.
+ * Virtual Terminal search algorithm default configurations for win32 platform.
  */
 export const win32: Required<VTexecInclusion<'win32'>> = {
     priorityTerms: ['cmd'],

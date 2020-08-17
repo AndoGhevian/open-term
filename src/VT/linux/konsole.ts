@@ -1,6 +1,6 @@
 import { spawn, SpawnOptions } from 'child_process'
-
 import { TerminalExecutor } from '../types'
+
 
 /**Run command from KDE-Konsole Terminal. */
 const runKonsole: TerminalExecutor = (command: string, terminalArgs, {

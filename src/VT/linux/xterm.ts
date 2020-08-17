@@ -1,6 +1,7 @@
 import { TerminalExecutor } from "../types"
 import { spawn, SpawnOptions } from "child_process"
 
+
 /**Run command from xterm. */
 const runXterm: TerminalExecutor = (command: string, terminalArgs, {
     detached = true,

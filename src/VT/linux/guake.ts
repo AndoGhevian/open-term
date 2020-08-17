@@ -1,6 +1,6 @@
 import { spawn, SpawnOptions } from 'child_process'
-
 import { TerminalExecutor } from '../types'
+
 
 /**Run command from Guake Terminal. */
 const runGuake: TerminalExecutor = (command: string, terminalArgs, {
@@ -16,7 +16,7 @@ const runGuake: TerminalExecutor = (command: string, terminalArgs, {
     }
 
     if (!args.includes('-e') && !args.includes('--execute-command')) {
-        args.push('--execute-command', command)
+        args.push('-e', command)
     }
 
     // console.log(args)

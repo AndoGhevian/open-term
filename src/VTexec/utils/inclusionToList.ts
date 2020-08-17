@@ -2,7 +2,7 @@ import { VTexecInclusion } from "../types"
 import { VTPlatforms } from "../../VT/types"
 
 /**
- * Convert's **VTexecInclusion** options with allready applied defaults to "vt-names" list.
+ * Convert's **VTexecInclusion** options with allready applied defaults to terminal-names list.
  * @param vtInclusion - **VTexecInclusion** options object with no missing properties.
  * @returns **terms** list with applied exclusions and sorted by specified priority.
  */

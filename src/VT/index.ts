@@ -1,4 +1,4 @@
-export * as VT from './VT'
+export { default as VT } from './VT'
 export {
     VTPlatforms,
     TerminalExecutor,

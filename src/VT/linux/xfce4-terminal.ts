@@ -1,6 +1,7 @@
 import { spawn, SpawnOptions } from "child_process"
 import { TerminalExecutor } from "../types"
 
+
 /**Run command from xfce4-terminal. */
 const runXfce: TerminalExecutor = (command: string, terminalArgs, {
     detached = true,
