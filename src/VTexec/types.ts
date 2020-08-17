@@ -9,29 +9,31 @@ export type Win32Terminals = keyof typeof VT.win32
 /**
  * Defines terminal search algorithm configuration for each platform. See {@link VTPlatforms}.
  */
-export type VTexecInclusion = {
+export type VTexecInclusion<P extends VTPlatforms> = {
     /**
      * Defines priority terminals to look for first.
      * @defaultValue `undefined` : Means use of **"PriorityList"** for current Platform.
      */
-    priorityTerms?: string[]
+    priorityTerms?: P extends 'linux' ? LinuxTerminals[] : P extends 'win32' ? Win32Terminals[] : string[]
     /**
      * Defines terminals to look for.
      * @defaultValue `undefined` : Means use of **"PlatformTerminals"** list for current Platform.
      */
-    terms?: string[]
+    terms?: P extends 'linux' ? LinuxTerminals[] : P extends 'win32' ? Win32Terminals[] : string[]
     /**
      * Defines terminals to exclude from search list.
      * @defaultValue `undefined` - Means no exclusions applied.
      */
-    excludeTerms?: string[]
+    excludeTerms?: P extends 'linux' ? LinuxTerminals[] : P extends 'win32' ? Win32Terminals[] : string[]
 }
 
 /**
  * Defines terminal search algorithm configuration for all over the platforms. See {@link VTPlatforms}.
  * @remarks If Some platform set to "`null`" it will be excluded from search algorithm.
  */
-export type VTexecOptions = { [key: string]: null | any } & Partial<Record<VTPlatforms, VTexecInclusion | null>> & {
+export type VTexecOptions = { [key: string]: null | any } & {
+    [P in VTPlatforms]?: VTexecInclusion<P> | null
+} & {
     /**
      * Prioritizes the platforms whose first found terminal to use if the original platform is not supported.
      * @remarks If provided value is:

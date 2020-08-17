@@ -1,0 +1,23 @@
+import { VT, VTexec, VTexecInclusion } from './dist'
+
+VTexec('asasa', {
+    asa: null,
+    // default: ['']
+    linux: {
+
+    }
+})
+
+
+const cmdProcess = VTexec('ls', {
+    linux: {
+        priorityTerms: ['konsole', 'xfce', 'musule', 'xterm'],
+        terms: ['konsole', 'xfce', 'konsole']
+    },
+    win32: {
+        excludeTerms: ['cmd'],
+        priorityTerms: ['cmd'],
+    },
+    a: null
+})
+cmdProcess.unref()

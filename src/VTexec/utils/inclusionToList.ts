@@ -1,19 +1,21 @@
 import { VTexecInclusion } from "../types"
+import { VTPlatforms } from "../../VT/types"
 
 /**
  * Convert's **VTexecInclusion** options with allready applied defaults to "vt-names" list.
  * @param vtInclusion - **VTexecInclusion** options object with no missing properties.
  * @returns **terms** list with applied exclusions and sorted by specified priority.
  */
-export default function inclusionToList(vtInclusion: Required<VTexecInclusion>) {
+export default function inclusionToList(vtInclusion: Required<VTexecInclusion<VTPlatforms>>) {
     const sortedList: string[] = []
     for (const term of vtInclusion.terms) {
-        if (!vtInclusion.excludeTerms.includes(term)) {
+        const excludeTerms = vtInclusion.excludeTerms as string[]
+        if (!excludeTerms.includes(term)) {
             sortedList.push(term)
         }
     }
 
-    const priorityList = vtInclusion.priorityTerms
+    const priorityList = vtInclusion.priorityTerms as string[]
     sortedList.sort((a, b) => {
         const aIndex = priorityList.indexOf(a)
         const bIndex = priorityList.indexOf(b)

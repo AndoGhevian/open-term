@@ -45,7 +45,7 @@ export default function VTexec(command: string, options?: VTexecOptions): any {
     switch (platform) {
         case 'linux':
         case 'win32':
-            const vtList = inclusionToList(optionsWithDefaults[platform] as Required<VTexecInclusion>)
+            const vtList = inclusionToList(optionsWithDefaults[platform]! as Required<VTexecInclusion<VTPlatforms>>)
             return findVt(platform, vtList)
         default:
             break

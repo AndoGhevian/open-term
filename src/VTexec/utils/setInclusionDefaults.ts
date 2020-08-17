@@ -10,14 +10,14 @@ import {
 } from '../inclusionDefaults'
 
 
-function setLinuxInclusionDefaults(linuxInclusion: VTexecInclusion): void {
+function setLinuxInclusionDefaults(linuxInclusion: VTexecInclusion<'linux'>): void {
     if (linuxInclusion.priorityTerms === undefined) linuxInclusion.priorityTerms = linuxInclusionDefaults.priorityTerms
     if (linuxInclusion.terms === undefined) linuxInclusion.terms = linuxInclusionDefaults.terms
     if (linuxInclusion.excludeTerms === undefined) linuxInclusion.excludeTerms = linuxInclusionDefaults.excludeTerms
 }
 
 
-function setWin32InclusionDefaults(win32Inclusion: VTexecInclusion): void {
+function setWin32InclusionDefaults(win32Inclusion: VTexecInclusion<'win32'>): void {
     if (win32Inclusion.priorityTerms === undefined) win32Inclusion.priorityTerms = win32InclusionDefaults.priorityTerms
     if (win32Inclusion.terms === undefined) win32Inclusion.terms = win32InclusionDefaults.terms
     if (win32Inclusion.excludeTerms === undefined) win32Inclusion.excludeTerms = win32InclusionDefaults.excludeTerms
