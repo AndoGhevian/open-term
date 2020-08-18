@@ -64,7 +64,7 @@ If you provide any number of **"terminalArgs"** which not contain **_execArg_** 
 
 You can find information about available arguments for particular terminal on its **man page** or in **help**.
 
-#### SupportedTerminals
+#### Supported Terminals
 Currently supported Terminal Emulators listed by Platforms:
 1. linux
     - [x] xterm - `VT.linux.xterm`
