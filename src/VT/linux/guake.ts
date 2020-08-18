@@ -11,7 +11,8 @@ const runGuake: TerminalExecutor = (command: string, terminalArgs, {
     const cwd = process.cwd()
 
     let args = ['--show', '-n', cwd]
-    if(terminalArgs) {
+    
+    if (terminalArgs) {
         args = [...terminalArgs]
     }
 
