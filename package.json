@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "description": "Start command in new terminal.",
   "main": "dist/index.js",
-  "private": true,
+  "types": "dist/index.d.ts",
+  "private": false,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --watch src/ --ext ts --exec 'tsc && node dist/index.js'",
-    "start": "node dist/index.js"
+    "build": "tsc",
+    "prepare": "npm run build"
   },
   "keywords": [
     "open terminal",
@@ -16,6 +18,10 @@
     "terminal emulator"
   ],
   "author": "Ando",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AndoGhevian/open-term.git"
+  },
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^14.0.27",

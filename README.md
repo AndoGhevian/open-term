@@ -1,16 +1,29 @@
 # OpenTerm
-OpenTerm allows you to run arbitrary commands from [**Independent Terminal Emulators**][VT] of target OS's and to **see the output**. It also provides configurable function which will automatically determine **Terminal** to run command from, depending on Target OS.
+OpenTerm allows you to run arbitrary commands from [_Independent Terminal Emulators_][VT] of target OS's and to **see the output**. It also provides configurable function which will automatically determine **Terminal** to run command from, depending on Target OS.
 
 **Important:** Part of **seeing output** is crucial because in general terminals adhere to behavior of closing after command beeing executed, which not allow client to see the output.
+## Table of Contest
+- [Usage](#usage)
+  - [VT](#part-1-vt)
+  - [VTexec](#part-2-vtexec)
+- [Supported Terminals](#supported-terminals)
+- [Package Defaults](#package-defaults)
+-------------------------
 
 ## Usage
 This package consists of **2 parts**.
-1. Part 1 - **VT** : Virtual Terminal runners list.
-1. Part 2 - **VTexec** - Configurable function which automatically determins Terminal and runns.
+1. [Part 1 - **VT**](#part-1-vt) : Virtual Terminal runners list.
+1. [Part 2 - **VTexec**](#part-2-vtexec) - Configurable function which automatically determines Terminal and runs.
 _________________________
 
 ### Part 1: VT
-First Part exported as **"VT"** consists of distributed by platforms functions for running different Terminals. You cant use them to run command in a separate Terminal:
+##### Table of Contest
+- [Usage](#part-1-vt)
+- [VT Functions Signiture](#vt-function-signiture)
+- [Supported Terminals](#supported-terminals)
+-------------------------
+
+First Part exported as **"VT"** consists of distributed by platforms functions for running different Terminals. You can use them to run command in a separate Terminal:
 1. Use Linux Terminals. e.g.
     ```javascript
     const { VT } = require('open-term')
@@ -22,31 +35,36 @@ First Part exported as **"VT"** consists of distributed by platforms functions f
     const { VT } = require('open-term')
     VT.win32.cmd('help') // Runs "help" command in cmd.
     ```
-When calling **VT** functions, as a result you getting [**ChildProcess**][ChildProcess] instance representing spawned terminal. If you want you can [_unref_][unref] it to allow current nodejs process to exit independently of the spawned terminal.
+When calling **VT** functions, as a result you getting [_ChildProcess_][ChildProcess] instance representing spawned terminal. If you want you can [_unref_][unref] it to allow current nodejs process to exit independently of the spawned terminal.
+_________________________
 
+#### VT Function Signiture
 All **VT** functions has same signiture named _TerminalExecutor_: 
 ```typescript
 type TerminalExecutor = (command: string, terminalArgs?: string[], terminalSpawnOptions?: SpawnOptions) => ChildProcess
 ```
 - **_command_** - Defines command string to execute in opened terminal.
-- **_terminalArgs_** - Defines arguments to start terminal with. By default all terminals start with 3 types of arguments each responsable for key behaviour of our package: 
-    - **execArg:Static** Argument responsable for command execution which takes provided command, e.g `-e command` for "_guake_"
+- **_terminalArgs_** - Defines arguments to start terminal with. By default all terminals runed with 3 types of arguments each responsible for key behaviour of our package:
+    - **execArg:Static** Argument responsible for command execution, which takes provided command, e.g `-e command` for "_guake_"
     - **holdArg:Optional**: Argument which force terminal to not be closed after command is executed. e.g. `-hold` for "_xterm_".
-    > Although this argument defines required behaviour for our package, **"terminals must not be closed after command executed"** - but in some cases terminal not provide arguments to control this behaviour but at same time it's default for terminal, so we stick with static and at same time desired behaviour. Good example is "_guake_".
+    > **NOTE:** Although this argument defines required behaviour for our package, **"terminals must not be closed after command executed"** - but in some cases, the terminal not provide arguments to control this behaviour, at the same time it behaves exactly as desired, so we stick with static and at same time desired behaviour. Good example is "_guake_".
     >
-    > Terminals, for which theres not way to achieve this behaviour, are omited from the package.
-    - **PopupArgs:Optional**: This arguments force to open terminal in new window, or at least in new tab and show it immediately.
-    > If there is a way, terminal will be opened in new window. If not, it will be opened in new tab and showed. e.g." _guak_", when theres no way to open new window, but we can open new tab, and show _guake_ at startup.
+    > **Important:** Terminals that cannot achieve this behavior are not supported by package.
+    - **PopupArgs:Optional**: This argument(s) force to open terminal in a new window, or at least in a new tab and show it immediately, e.g. `--show -n .` for "_guake_".
+    > **NOTE:** If there is a way, terminal will be opened in a new window. If not, it will be opened in a new tab and shown. Good example is " _guake_", when theres no way to open a new window, but we can open a new tab, and show "_guake_" at startup.
     >
-    If you provide any number of **_terminalArgs_** which not contain **"execArg"** for terminal, then all default arguments will be disabled except **"execArg"**, and provided list will be used. If you want to disable all default arguments including **"execArg"**, you must specify **"execArg"**.
 - **_terminalSpawnOptions_** - Options to spawn terminal process with two defaults:
     - **_detached_** - `true`
     - **_stdio_** - `'ignore'`
 
-    For more details see [**SpawnOptions**][SpawnOptions].
-  
-  You can find information about available arguments for particular terminal on its **man page** or in **help**.
+    For more details see [_SpawnOptions_][SpawnOptions].
+    
+    
+If you provide any number of **"terminalArgs"** which not contain **_execArg_** for terminal, then all default arguments will be disabled except **_execArg_**, and provided list will be used. If you want to disable all default arguments including **_execArg_**, you must specify **_execArg_**.
 
+You can find information about available arguments for particular terminal on its **man page** or in **help**.
+
+#### SupportedTerminals
 Currently supported Terminal Emulators listed by Platforms:
 1. linux
     - [x] xterm - `VT.linux.xterm`
@@ -60,11 +78,25 @@ You can of course easily extend this list if you want.
 _________________________
 
 ### Part 2: VTexec
+##### Table of Contest
+- [Usage](#part-2-vtexec)
+- [VTexec Function Signiture](#vtexec-function-signiture)
+- [SearchConfig](#searchconfig)
+- [Terminal Search Algorithm](#terminal-search-algorithm)
+-------------------------
+
 This function automatically determine terminal to use, open it, and execute provided command in it. Algorithm which define's how to find terminal follow the configuration provided with second argument to **VTexec** function. If **config** is not provided, it will take **{{Platform}}SearchConfig** for supported **platforms**, or, if **platform** is not supported, it will iterate through **PlatformsList** and for each **platform** look in **{{Platform}}TerminalsList** for terminal until found.
 
-Here, as any **VT** Terminal function, it return's [**ChildProcess**][ChildProcess] instance. To be precise, it uses the same **VT** functions under the hood.
+Well, example below will run both on **win32** and **linux**, and additionaly in any OS, if `env.PATH` contains at least one terminal from supported ones regardless of platform i.e. if your os platform is **blablabla**, but you have in your `$PATH` _guake_, then we will run it.
+```javascript
+const { VTexec } = require('open-term')
+VTexec('help') // Runs "help" command.
+```
 
-Signiture of **VTexec**: 
+Here, as any **VT** Terminal function, it return's [_ChildProcess_][ChildProcess] instance. To be precise, it uses the same [_VT_](#part-1-vt) functions under the hood.
+_________________________
+
+#### VTexec Function Signiture
 ```typescript
 function VTexec(command: string, options?: VTexecOptions): ChildProcess
 ```
@@ -74,12 +106,14 @@ function VTexec(command: string, options?: VTexecOptions): ChildProcess
     > - For supported **platforms** see **_PlatformsList_**.
     > - For default **searchConfig** of each supported **platform** see **{{platform}}SearchConfig**.
 
-**SearchConfig:**
+
+#### SearchConfig
   - **_terms_** - Terminals list to look for when searching terminal to use. By default it takes **{{Platform}}TerminalsList** for appropriate **platform**.
   - **_excludeTerms_** - Terminals to exclude from **_SearchConfig.terms_**. By default is empty _Array_: `[]`.
   - **_priorityTerms_** - Priority Terminals to look for first, in same order as specified in list. By default it takes **{{Platform}}TerminalsList**.
 
-**Terminal Search Algorithm:**
+
+#### Terminal Search Algorithm
 When searching terminal to use, **VTexec** first of all look for your platform in **VTexecOptions** map, 
  - If it exists in map, then:
     1. If provided value is `null` it whill end with error: _NotSupported_.
@@ -95,13 +129,13 @@ When searching terminal to use, **VTexec** first of all look for your platform i
         1. If **default** is not specified it will take as default **_PlatformsList_**.
 _________________________
 
-**Package Defaults:**
-  - **PlatformsList**: 
+#### Package Defaults
+  - #### **PlatformsList**: 
     ```javascript 
     ['linux', 'win32']
     ```
 
-  - **{{Platform}}SearchConfig:**
+  - #### **{{Platform}}SearchConfig:**
     - linuxSearchConfig: 
         ```javascript
         {
@@ -118,7 +152,7 @@ _________________________
         excludeTerms: [],
         }
         ```
-  - **{{Platform}}TerminalsList:**
+  - #### **{{Platform}}TerminalsList:**
     - linuxTerminalsList: 
         ```javascript
         ['xterm', 'guake', 'konsole', 'xfce']
@@ -128,11 +162,6 @@ _________________________
         ['cmd']
         ```
         
-Well, This will run both on **win32** and **linux**. And additionaly in different distros of linux, with different terminals included in `$PATH` it will work.
-```javascript
-const { VTexec } = require('open-term')
-VTexec('help') // Runs "help" command.
-```
 Thats it.
 
 [VT]: https://en.wikipedia.org/wiki/Terminal_emulator
