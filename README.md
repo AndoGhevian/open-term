@@ -13,13 +13,13 @@ _________________________
 First Part exported as **"VT"** consists of distributed by platforms functions for running different Terminals. You cant use them to run command in a separate Terminal:
 1. Use Linux Terminals. e.g.
     ```javascript
-    const { VT } = require('./open-term')
+    const { VT } = require('open-term')
     VT.linux.xterm('ls -l') // Runs "ls -l" command in xterm.
     VT.linux.guake('ls -l') // Runs "ls -l" command in guake.
     ```
 2. Use Win32 Terminals. e.g.
     ```javascript
-    const { VT } = require('./open-term')
+    const { VT } = require('open-term')
     VT.win32.cmd('help') // Runs "help" command in cmd.
     ```
 When calling **VT** functions, as a result you getting [**ChildProcess**][ChildProcess] instance representing spawned terminal. If you want you can [_unref_][unref] it to allow current nodejs process to exit independently of the spawned terminal.
@@ -60,7 +60,7 @@ You can of course easily extend this list if you want.
 _________________________
 
 ### Part 2: VTexec
-This function automatically determine terminal to use, open it, and execute provided command in it. Algorithm which define's how to find terminal follow the configuration provided with second argument to **VTexec** function. For default **config** see **_VTexecDefaultOptions_**.
+This function automatically determine terminal to use, open it, and execute provided command in it. Algorithm which define's how to find terminal follow the configuration provided with second argument to **VTexec** function. If **config** is not provided, it will take **{{Platform}}SearchConfig** for supported **platforms**, or, if **platform** is not supported, it will iterate through **PlatformsList** and for each **platform** look in **{{Platform}}TerminalsList** for terminal until found.
 
 Here, as any **VT** Terminal function, it return's [**ChildProcess**][ChildProcess] instance. To be precise, it uses the same **VT** functions under the hood.
 
@@ -69,7 +69,7 @@ Signiture of **VTexec**:
 function VTexec(command: string, options?: VTexecOptions): ChildProcess
 ```
 - **_command_** - Defines command string to execute in found terminal.
-- **VTexecOptions:Optional** - Is a `{ [key: {{platform}}]?:{{searchConfig}}, default?: Platform[] }` map with one reserved key name - **"default"**. Every supported platform has it's default **searchConfig**. Key **"default"** instead of **searchConfig** takes _Array_ of **platform** names from **PlatformsList** as fallbacks list to search terminal in, if there is no config provided for platform in map.
+- **VTexecOptions:Optional** - Is a `{ [key: {{platform}}]?:{{searchConfig}}, default?: Platform[] }` map with one reserved key name - **"default"**. Every supported platform has it's default **searchConfig**. Key **"default"** instead of **searchConfig**, takes _Array_ of **platform** names from **PlatformsList**, as fallbacks list to search terminal in, if there is no config provided for platform in map.
     > VTexecOptions - default is empty object.
     > - For supported **platforms** see **_PlatformsList_**.
     > - For default **searchConfig** of each supported **platform** see **{{platform}}SearchConfig**.
@@ -127,7 +127,13 @@ _________________________
         ```javascript
         ['cmd']
         ```
-
+        
+Well, This will run both on **win32** and **linux**. And additionaly in different distros of linux, with different terminals included in `$PATH` it will work.
+```javascript
+const { VTexec } = require('open-term')
+VTexec('help') // Runs "help" command.
+```
+Thats it.
 
 [VT]: https://en.wikipedia.org/wiki/Terminal_emulator
 
