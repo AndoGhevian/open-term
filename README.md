@@ -14,7 +14,7 @@ OpenTerm allows you to run arbitrary commands from [_Independent Terminal Emulat
 This package consists of **2 parts**.
 1. [Part 1 - **VT**](#part-1-vt) : Virtual Terminal runners list.
 1. [Part 2 - **VTexec**](#part-2-vtexec) - Configurable function which automatically determines Terminal and runs.
-_________________________
+
 
 ### Part 1: VT
 ##### Table of Contest
@@ -36,7 +36,7 @@ First Part exported as **"VT"** consists of distributed by platforms functions f
     VT.win32.cmd('help') // Runs "help" command in cmd.
     ```
 When calling **VT** functions, as a result you getting [_ChildProcess_][ChildProcess] instance representing spawned terminal. If you want you can [_unref_][unref] it to allow current nodejs process to exit independently of the spawned terminal.
-_________________________
+
 
 #### VT Function Signiture
 All **VT** functions has same signiture named _TerminalExecutor_: 
@@ -94,7 +94,7 @@ VTexec('help') // Runs "help" command.
 ```
 
 Here, as any **VT** Terminal function, it return's [_ChildProcess_][ChildProcess] instance. To be precise, it uses the same [_VT_](#part-1-vt) functions under the hood.
-_________________________
+
 
 #### VTexec Function Signiture
 ```typescript
