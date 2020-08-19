@@ -85,12 +85,43 @@ _________________________
 - [Terminal Search Algorithm](#terminal-search-algorithm)
 -------------------------
 
-This function automatically determine terminal to use, open it, and execute provided command in it. Algorithm which define's how to find terminal, follow the configuration provided with second argument to **VTexec** function. If It's not provided, then, for supported **platforms** ( **See** [_PlatformsList_](#platformslist) ) default [_{{Platform}}SearchConfig_](#platformsearchconfig) will be used, or, if **platform** is not supported, **VTexec** will iterate through [_PlatformsList_](#platformslist) and for each **platform** look in [_{{Platform}}TerminalsList_](#platformterminalslist) for terminal until found.
+This function automatically determine terminal to use, open it, and execute provided command in it. Algorithm which define's how to find terminal, follow the configuration provided with second argument to **VTexec** function. If It's not provided, then, 
+1. For supported **platforms** ( **See** [_PlatformsList_](#platformslist) ) default [_{{Platform}}SearchConfig_](#platformsearchconfig) will be used.
+1. For not supported **platforms**, **VTexec** will iterate through [_PlatformsList_](#platformslist) and for each **platform** look in [_{{Platform}}TerminalsList_](#platformterminalslist) for terminal until found.
+> See [Terminal Search Algorithm](#terminal-search-algorithm).
 
-Well, example below will run both on **win32** and **linux**, and additionaly in any OS, if `env.PATH` contains at least one terminal from supported ones regardless of platform i.e. if your os platform is **blablabla**, but you have in your `$PATH` _guake_, then we will run it.
+Well, example below will success both on **win32** and **linux**, and additionaly in any OS, if `env.PATH` contains at least one terminal from supported ones regardless of platform i.e. if your os platform is **blablabla**, but you have in your `$PATH` _guake_, then we will run it.
 ```javascript
 const { VTexec } = require('open-term')
 VTexec('help') // Runs "help" command.
+```
+
+You can force **VTexec** to not support particular **platform** by providing appropriate property on **VTexecConfig** with value `null`.
+```javascript
+const { VTexec } = require('open-term')
+VTexec('help', {
+    win32: null,
+    openbsd: null
+}) // Force to throw an error: 'NotSupported' for 'win32' and 'openbsd'.
+```
+
+Or, you can change default **searchConfig** values for supported **platforms**. For more ditails see [SearchConfig](#searchconfig).
+> Configs for not supported **platforms**, if provided, will be ignored.
+```javascript
+const { VTexec } = require('open-term')
+VTexec('help', {
+    // This Config force to consider for linux only 'xterm' | 'guake' | 'konsole'
+    // terminals, with provided order.
+    // With only one difference, to consider 'konsole' first of all.
+    linux: {
+        priorityTerms: ['konsole'],
+        terms: ['xterm', 'guake', 'konsole']
+    },
+    // Config for 'openbsd' will be ignored
+    openbsd: {
+        terms: ['openbsdTerm', 'else']
+    }
+}) // Force to throw an error: 'NotSupported' for 'win32' and 'openbsd'.
 ```
 
 Here, as any **VT** Terminal function, it return's [_ChildProcess_][ChildProcess] instance. To be precise, it uses the same [_VT_](#part-1-vt) functions under the hood.
@@ -98,23 +129,26 @@ Here, as any **VT** Terminal function, it return's [_ChildProcess_][ChildProcess
 
 #### VTexec Function Signiture
 ```typescript
-function VTexec(command: string, options?: VTexecOptions): ChildProcess
+function VTexec(command: string, vtExecConfig: VTexecConfig): ChildProcess
 ```
 - **_command_** - Defines command string to execute in found terminal.
-- **VTexecOptions:Optional** - Is a `{ [key: {{platform}}]?:{{searchConfig}}, default?: Platform[] }` map with one reserved key name - **"default"**. Every supported platform has it's default **searchConfig**. Key **"default"** instead of **searchConfig**, takes _Array_ of **platform** names from **PlatformsList**, as fallbacks list to search terminal in, if there is no config provided for platform in map.
-    > VTexecOptions - default is empty object.
-    > - For supported **platforms** see **_PlatformsList_**.
-    > - For default **searchConfig** of each supported **platform** see **{{platform}}SearchConfig**.
+- **vtExecConfig:Optional** - Is a `{ [key: {{platform}}]?:{{searchConfig | null}}, default?: Platform[] | null }` map with one reserved key - **"default"**, which cant be used as **platform** name.
+
+  [SearchConfig](#searchconfig) if provided, will be considered only for supported platforms. Every supported platform has it's default **searchConfig** ( see [_{{Platform}}SearchConfig_](#platformsearchconfig) ). Platform's support can be manually disabled by setting appropriate platform property to `null`.
+  
+  Property **"default"**, instead of **searchConfig**, takes _Array_ of **platform** names from [_PlatformsList_](#platformslist), as fallbacks list to search terminal for not supported platforms unless that platform is not explicitly excluded. Fallbacks can be disabled by setting this property to `null`. If **"default"** is not provided, [_PlatformsList_](#platformslist) will be used.
+    > vtExecConfig - default is empty object, i.e. Any internal properties will take their defaults.
 
 
 #### SearchConfig
+
   - **_terms_** - Terminals list to look for when searching terminal to use. By default it takes **{{Platform}}TerminalsList** for appropriate **platform**.
   - **_excludeTerms_** - Terminals to exclude from **_SearchConfig.terms_**. By default is empty _Array_: `[]`.
   - **_priorityTerms_** - Priority Terminals to look for first, in same order as specified in list. By default it takes **{{Platform}}TerminalsList**.
 
 
 #### Terminal Search Algorithm
-When searching terminal to use, **VTexec** first of all look for your platform in **VTexecOptions** map, 
+When searching terminal to use, **VTexec** first of all look for your platform in **vtExecConfig** map, 
  - If it exists in map, then:
     1. If provided value is `null` it whill end with error: _NotSupported_.
     1. If **searchConfig** provided
@@ -123,7 +157,7 @@ When searching terminal to use, **VTexec** first of all look for your platform i
         > See **"default"** below.
  - If it not exist:
     1. If your **platform** is supported one, then **{{Platform}}SearchConfig**,  which is default, will be used.
-    1. If your **platform** is not supported one, the algorithm will look for **"default"** in provided **VTexecOptions**.
+    1. If your **platform** is not supported one, the algorithm will look for **"default"** in provided **vtExecConfig**.
         1. If **default** is **null**, then it will end with error: _NotSupported_
         1. If **default** is list of **platforms**, then it will iterate through and watch for all terminals of each provided platform name which is supported until one is found.
         1. If **default** is not specified it will take as default **_PlatformsList_**.
