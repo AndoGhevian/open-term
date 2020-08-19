@@ -130,37 +130,37 @@ When searching terminal to use, **VTexec** first of all look for your platform i
 _________________________
 
 #### Package Defaults
-  - #### PlatformsList 
-    ```javascript 
-    ['linux', 'win32']
-    ```
+#### PlatformsList
+```javascript 
+['linux', 'win32']
+```
 
-  - #### {{Platform}}SearchConfig
-    - linuxSearchConfig: 
-        ```javascript
-        {
-        priorityTerms: ['xterm', 'guake', 'konsole', 'xfce'],
-        terms: ['xterm', 'guake', 'konsole', 'xfce'],
-        excludeTerms: [],
-        }
-        ```
-    - win32SearchConfig: 
-        ```javascript
-        {
-        priorityTerms: ['cmd'],
-        terms: ['cmd'],
-        excludeTerms: [],
-        }
-        ```
-  - #### {{Platform}}TerminalsList
-    - linuxTerminalsList: 
-        ```javascript
-        ['xterm', 'guake', 'konsole', 'xfce']
-        ```
-    - win32TerminalsList: 
-        ```javascript
-        ['cmd']
-        ```
+#### {{Platform}}SearchConfig
+- linuxSearchConfig: 
+    ```javascript
+    {
+    priorityTerms: ['xterm', 'guake', 'konsole', 'xfce'],
+    terms: ['xterm', 'guake', 'konsole', 'xfce'],
+    excludeTerms: [],
+    }
+    ```
+- win32SearchConfig: 
+    ```javascript
+    {
+    priorityTerms: ['cmd'],
+    terms: ['cmd'],
+    excludeTerms: [],
+    }
+    ```
+#### {{Platform}}TerminalsList
+- linuxTerminalsList: 
+    ```javascript
+    ['xterm', 'guake', 'konsole', 'xfce']
+    ```
+- win32TerminalsList: 
+    ```javascript
+    ['cmd']
+    ```
         
 Thats it.
 
