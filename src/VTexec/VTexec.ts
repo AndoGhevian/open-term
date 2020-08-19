@@ -21,7 +21,7 @@ const omitError = (error: any) => null
 /**
  * This function automatically find and run terminal with provided command. using **VTExecConfigDefaults** as second argument.
  * @param command - String representation of command.
- * @param vtExecConfig - Terminal searching algorithm configuration.
+ * @param VTexecConfig - Terminal searching algorithm configuration.
  * @defaultValue
  * ```
  * { 
@@ -38,11 +38,11 @@ export default function VTexec(command: string): ChildProcess
 /**
  * This function automaticaly find and run terminal with provided command.
  * @param command - String representation of command.
- * @param vtExecConfig - Terminal searching algorithm configuration.
+ * @param VTexecConfig - Terminal searching algorithm configuration.
  */
-export default function VTexec(command: string, vtExecConfig: VTexecConfig): ChildProcess
-export default function VTexec(command: string, vtExecConfig?: VTexecConfig): any {
-    const vtExecConfigWithDefaults = setVTexecConfigDefaults(vtExecConfig)
+export default function VTexec(command: string, VTexecConfig: VTexecConfig): ChildProcess
+export default function VTexec(command: string, VTexecConfig?: VTexecConfig): any {
+    const VTexecConfigWithDefaults = setVTexecConfigDefaults(VTexecConfig)
 
     function findVt(platform: PlatformsList, vtList: string[]) {
         const supportedVtMap = VT[platform] as { [key: string]: TerminalExecutor }
@@ -55,7 +55,7 @@ export default function VTexec(command: string, vtExecConfig?: VTexecConfig): an
                 termProc.on('error', omitError)
             }
         }
-        throw new Error(`No Virtual Terminal Emulator found for platform: ${platform}, with provided "SearchConfig" vtExecConfig!`)
+        throw new Error(`No Virtual Terminal Emulator found for platform: ${platform}, with provided "SearchConfig" VTexecConfig!`)
     }
 
     if (typeof command !== 'string') {
@@ -63,20 +63,20 @@ export default function VTexec(command: string, vtExecConfig?: VTexecConfig): an
     }
     const platform = process.platform
 
-    if (vtExecConfigWithDefaults[platform] === null) throw new Error(`Platform: ${platform} is not supported.`)
+    if (VTexecConfigWithDefaults[platform] === null) throw new Error(`Platform: ${platform} is not supported.`)
 
     switch (platform) {
         case 'linux':
         case 'win32':
-            const vtList = searchConfigToList(vtExecConfigWithDefaults[platform]! as Required<SearchConfig<PlatformsList>>)
+            const vtList = searchConfigToList(VTexecConfigWithDefaults[platform]! as Required<SearchConfig<PlatformsList>>)
             return findVt(platform, vtList)
         default:
             break
     }
 
-    if (vtExecConfigWithDefaults.default === null) throw new Error(`Platform: ${platform} is not supported.`)
+    if (VTexecConfigWithDefaults.default === null) throw new Error(`Platform: ${platform} is not supported.`)
 
-    for (const fallbackPlatform of vtExecConfigWithDefaults.default) {
+    for (const fallbackPlatform of VTexecConfigWithDefaults.default) {
         if (Object.keys(VT).includes(fallbackPlatform)) {
             const vtList = searchConfigToList(searchConfigDefaults[fallbackPlatform])
             try {
@@ -84,5 +84,5 @@ export default function VTexec(command: string, vtExecConfig?: VTexecConfig): an
             } catch (err) { }
         }
     }
-    throw new Error(`No fallback Virtual Terminal Emulator found in platforms: ${vtExecConfigWithDefaults.default}`)
+    throw new Error(`No fallback Virtual Terminal Emulator found in platforms: ${VTexecConfigWithDefaults.default}`)
 }

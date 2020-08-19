@@ -90,7 +90,7 @@ This function automatically determine terminal to use, open it, and execute prov
 1. For not supported **platforms**, **VTexec** will iterate through [_PlatformsList_](#platformslist) and for each **platform** look in [_{{Platform}}TerminalsList_](#platformterminalslist) for terminal until found.
 > See [Terminal Search Algorithm](#terminal-search-algorithm).
 
-Well, example below will success both on **win32** and **linux**, and additionaly in any OS, if `env.PATH` contains at least one terminal from supported ones regardless of platform i.e. if your os platform is **blablabla**, but you have in your `$PATH` _guake_, then we will run it.
+Well, example below will success both on **win32** and **linux**, and additionally in any OS, if `env.PATH` contains at least one terminal from supported ones regardless of platform i.e. if your os platform is **blablabla**, but you have in your `$PATH` _guake_, then we will run it.
 ```javascript
 const { VTexec } = require('open-term')
 VTexec('help') // Runs "help" command.
@@ -111,8 +111,8 @@ Or, you can change default **searchConfig** values for supported **platforms**. 
 const { VTexec } = require('open-term')
 VTexec('help', {
     // This Config force to consider for linux only 'xterm' | 'guake' | 'konsole'
-    // terminals, with provided order.
-    // With only one difference, to consider 'konsole' first of all.
+    // terminals, in the same order,
+    // With only one difference, that we will consider 'konsole' first of all.
     linux: {
         priorityTerms: ['konsole'],
         terms: ['xterm', 'guake', 'konsole']
@@ -129,38 +129,39 @@ Here, as any **VT** Terminal function, it return's [_ChildProcess_][ChildProcess
 
 #### VTexec Function Signiture
 ```typescript
-function VTexec(command: string, vtExecConfig: VTexecConfig): ChildProcess
+function VTexec(command: string, VTexecConfig: VTexecConfig): ChildProcess
 ```
 - **_command_** - Defines command string to execute in found terminal.
-- **vtExecConfig:Optional** - Is a `{ [key: {{platform}}]?:{{searchConfig | null}}, default?: Platform[] | null }` map with one reserved key - **"default"**, which cant be used as **platform** name.
+- **VTexecConfig:Optional** - Is a `{ [key: {{platform}}]?:{{searchConfig | null}}, default?: Platform[] | null }` map with one reserved key - **"default"**, which cant be used as **platform** name.
 
   [SearchConfig](#searchconfig) if provided, will be considered only for supported platforms. Every supported platform has it's default **searchConfig** ( see [_{{Platform}}SearchConfig_](#platformsearchconfig) ). Platform's support can be manually disabled by setting appropriate platform property to `null`.
   
   Property **"default"**, instead of **searchConfig**, takes _Array_ of **platform** names from [_PlatformsList_](#platformslist), as fallbacks list to search terminal for not supported platforms unless that platform is not explicitly excluded. Fallbacks can be disabled by setting this property to `null`. If **"default"** is not provided, [_PlatformsList_](#platformslist) will be used.
-    > vtExecConfig - default is empty object, i.e. Any internal properties will take their defaults.
+    > VTexecConfig - default is empty object, i.e. Any internal properties will take their defaults.
 
 
 #### SearchConfig
-
-  - **_terms_** - Terminals list to look for when searching terminal to use. By default it takes **{{Platform}}TerminalsList** for appropriate **platform**.
+**SearchConfig** determines the behaviour of the terminal selection algorithm for a specific supported **platform** ( See [_PlatformsList_](#platformslist) ). It will be processed by **VTexec** and transformed to Terminals ordered list, which then will be iterate to find valid terminal.
+  - **_terms_** - Terminals list which will be looked, when searching terminal to use. By default it takes [_{{Platform}}TerminalsList_](#platformterminalslist) for appropriate **platform**.
   - **_excludeTerms_** - Terminals to exclude from **_SearchConfig.terms_**. By default is empty _Array_: `[]`.
-  - **_priorityTerms_** - Priority Terminals to look for first, in same order as specified in list. By default it takes **{{Platform}}TerminalsList**.
+  - **_priorityTerms_** - Priority Terminals to look for first in same order as specified in the list. By default it takes [_{{Platform}}TerminalsList_](#platformterminalslist).
+> **NOTE:** See default **searchConfigs** for supported platforms: [_{{Platform}}SearchConfig_](#platformsearchconfig).
 
 
 #### Terminal Search Algorithm
-When searching terminal to use, **VTexec** first of all look for your platform in **vtExecConfig** map, 
- - If it exists in map, then:
-    1. If provided value is `null` it whill end with error: _NotSupported_.
+When searching terminal to use, **VTexec** first of all look for your platform in [VTexecConfig](#vtexec-function-signiture) map, 
+ - If it exists in the map, then:
+    1. If provided value is `null` it will end with error: _NotSupported_.
     1. If **searchConfig** provided
-        1. If your platform is supported then it will deduce from config a list of terminals, and iterate through until terminal found.
-        1. If your platform is not supported it will fall to default.
+        1. If your platform is supported then it will deduce from provided **config** a list of terminals, and iterate through until terminal found. If no valid terminal found, it will end with error: _NotSupported_
+        1. If your platform is not supported ( See [_PlatformsList_](#platformslist) ) it will fall to **"default"**.
         > See **"default"** below.
  - If it not exist:
-    1. If your **platform** is supported one, then **{{Platform}}SearchConfig**,  which is default, will be used.
-    1. If your **platform** is not supported one, the algorithm will look for **"default"** in provided **vtExecConfig**.
+    1. If your **platform** is supported, then [_{{Platform}}SearchConfig_](#platformsearchconfig),  which is default, will be used.
+    1. If your **platform** is not supported, the algorithm will look for **"default"** in provided **VTexecConfig**.
         1. If **default** is **null**, then it will end with error: _NotSupported_
-        1. If **default** is list of **platforms**, then it will iterate through and watch for all terminals of each provided platform name which is supported until one is found.
-        1. If **default** is not specified it will take as default **_PlatformsList_**.
+        1. If **default** is list of **platforms**, then it will iterate through and watch for all terminals of each provided platform which is supported, until one is found. If no valid terminal found, it will end with error: _NotSupported_
+        1. If **default** is not specified it will take as default [_PlatformsList_](#platformslist).
 _________________________
 
 #### Package Defaults
