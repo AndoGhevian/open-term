@@ -130,12 +130,12 @@ When searching terminal to use, **VTexec** first of all look for your platform i
 _________________________
 
 #### Package Defaults
-  - #### **PlatformsList**: 
+  - #### PlatformsList 
     ```javascript 
     ['linux', 'win32']
     ```
 
-  - #### **{{Platform}}SearchConfig:**
+  - #### {{Platform}}SearchConfig
     - linuxSearchConfig: 
         ```javascript
         {
@@ -152,7 +152,7 @@ _________________________
         excludeTerms: [],
         }
         ```
-  - #### **{{Platform}}TerminalsList:**
+  - #### {{Platform}}TerminalsList
     - linuxTerminalsList: 
         ```javascript
         ['xterm', 'guake', 'konsole', 'xfce']
