@@ -85,7 +85,7 @@ _________________________
 - [Terminal Search Algorithm](#terminal-search-algorithm)
 -------------------------
 
-This function automatically determine terminal to use, open it, and execute provided command in it. Algorithm which define's how to find terminal follow the configuration provided with second argument to **VTexec** function. If **config** is not provided, it will take **{{Platform}}SearchConfig** for supported **platforms**, or, if **platform** is not supported, it will iterate through **PlatformsList** and for each **platform** look in **{{Platform}}TerminalsList** for terminal until found.
+This function automatically determine terminal to use, open it, and execute provided command in it. Algorithm which define's how to find terminal, follow the configuration provided with second argument to **VTexec** function. If It's not provided, then, for supported **platforms** ( **See** [_PlatformsList_](platformslist) ) default [_{{Platform}}SearchConfig_](#platformsearchconfig) will be used, or, if **platform** is not supported, **VTexec** will iterate through [_PlatformsList_](platformslist) and for each **platform** look in [_{{Platform}}TerminalsList_](platformterminalslist) for terminal until found.
 
 Well, example below will run both on **win32** and **linux**, and additionaly in any OS, if `env.PATH` contains at least one terminal from supported ones regardless of platform i.e. if your os platform is **blablabla**, but you have in your `$PATH` _guake_, then we will run it.
 ```javascript

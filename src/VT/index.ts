@@ -1,5 +1,5 @@
 export { default as VT } from './VT'
 export {
-    VTPlatforms,
+    PlatformsList,
     TerminalExecutor,
 } from './types'

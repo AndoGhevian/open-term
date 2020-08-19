@@ -1,4 +1,4 @@
-import { VTPlatforms, VT } from "../VT"
+import { PlatformsList, VT } from "../VT"
 
 /**
  * Linux Terminals List. 
@@ -13,9 +13,9 @@ export type LinuxTerminals = keyof typeof VT.linux
 export type Win32Terminals = keyof typeof VT.win32
 
 /**
- * Defines terminal search algorithm configuration for each platform. See {@link VTPlatforms}.
+ * Defines terminal search algorithm configuration for each platform. See {@link PlatformsList}.
  */
-export type VTexecInclusion<P extends VTPlatforms> = {
+export type SearchConfig<P extends PlatformsList> = {
     /**
      * Defines priority terminals to look for first.
      * @defaultValue `undefined` : Means use order of **"PlatformTerminals"** list for current platform.
@@ -34,23 +34,23 @@ export type VTexecInclusion<P extends VTPlatforms> = {
 }
 
 /**
- * Defines terminal search algorithm configuration for all over the platforms. See {@link VTPlatforms}.
+ * Defines terminal search algorithm configuration for all over the platforms. See {@link PlatformsList}.
  * @remarks If Some platform set to "`null`" it will be excluded from search algorithm.
  * 
- * e.g. if You provide as VTInclusion `{ AnyOsName: null, ... }`, that Os will be considered as not supported.
+ * e.g. if You provide as SearchConfig `{ AnyOsName: null, ... }`, that Os will be considered as not supported.
  */
-export type VTexecOptions = { [key: string]: null | any } & {
-    [P in VTPlatforms]?: VTexecInclusion<P> | null
+export type VTexecConfig = { [key: string]: null | any } & {
+    [P in PlatformsList]?: SearchConfig<P> | null
 } & {
     /**
      * Prioritizes the platforms whose first found terminal to use if the original platform is not supported.
      * @remarks If provided value is:
-     * 1. "`undefined`" ( or not provided ) -- Search algorithm will iterate through all platforms by predefined order of **"VTPlatforms"** list, and
-     * bulk search for valid terminal from **"PlatformTerminals"** list of each platform until one is found.
-     *     > 1. See {@link VTPlatforms} for predefined order of supported platforms.
-     *     > 1. See {@link LinuxTerminals} and {@link Win32Terminals} for **"PlatformTerminals"** lists.
+     * 1. "`undefined`" ( or not provided ) -- Search algorithm will iterate through all platforms by predefined order of **"PlatformsList"**, and
+     * bulk search for valid terminal from **"{{Platform}}TerminalsList"** of each platform until one is found.
+     *     > 1. See {@link PlatformsList} for predefined order of supported platforms.
+     *     > 1. See {@link LinuxTerminalsList} and {@link Win32TerminalsList} for **"{{Platform}}TerminalsList"**'s.
      * 1. "`null`" -- Search algorithm will immidiately end with Error: _"NotSupported"_ if your platform is not supported.
      * @defaultValue `undefined` : Means bulk search will be performed. See first remark.
      */
-    default?: VTPlatforms[] | null;
+    default?: PlatformsList[] | null;
 }

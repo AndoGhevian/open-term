@@ -2,7 +2,7 @@ import { SpawnOptions, ChildProcess } from 'child_process'
 import VT from './VT'
 
 /**Defines supported platforms. */
-export type VTPlatforms = (keyof typeof VT)
+export type PlatformsList = (keyof typeof VT)
 
 /**
  * Run command from Terminal.

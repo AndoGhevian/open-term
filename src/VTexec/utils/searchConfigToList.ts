@@ -1,21 +1,21 @@
-import { VTexecInclusion } from "../types"
-import { VTPlatforms } from "../../VT/types"
+import { SearchConfig } from "../types"
+import { PlatformsList } from "../../VT/types"
 
 /**
- * Convert's **VTexecInclusion** options with allready applied defaults to terminal-names list.
- * @param vtInclusion - **VTexecInclusion** options object with no missing properties.
+ * Convert's **SearchConfig** options with allready applied defaults to terminal-names list.
+ * @param searchConfig - **SearchConfig** options object with no missing properties.
  * @returns **terms** list with applied exclusions and sorted by specified priority.
  */
-export default function inclusionToList(vtInclusion: Required<VTexecInclusion<VTPlatforms>>) {
+export default function searchConfigToList(searchConfig: Required<SearchConfig<PlatformsList>>) {
     const sortedList: string[] = []
-    for (const term of vtInclusion.terms) {
-        const excludeTerms = vtInclusion.excludeTerms as string[]
+    for (const term of searchConfig.terms) {
+        const excludeTerms = searchConfig.excludeTerms as string[]
         if (!excludeTerms.includes(term)) {
             sortedList.push(term)
         }
     }
 
-    const priorityList = vtInclusion.priorityTerms as string[]
+    const priorityList = searchConfig.priorityTerms as string[]
     sortedList.sort((a, b) => {
         const aIndex = priorityList.indexOf(a)
         const bIndex = priorityList.indexOf(b)

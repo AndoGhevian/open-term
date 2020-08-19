@@ -1,13 +1,13 @@
 export {
     VT,
-    VTPlatforms,
+    PlatformsList,
     TerminalExecutor,
 } from './VT'
 export {
     VTexec,
-    VTexecInclusion,
-    VTexecOptions,
+    SearchConfig,
+    VTexecConfig,
     LinuxTerminals,
     Win32Terminals,
-    inclusionDefaults,
+    SearchConfigDefaults,
 } from './VTexec'

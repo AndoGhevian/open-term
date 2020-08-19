@@ -1,2 +1,2 @@
-export { default as inclusionToList } from './inclusionToList'
-export { default as setInclusionDefaults } from './setInclusionDefaults'
+export { default as searchConfigToList } from './searchConfigToList'
+export { default as setVTexecConfigDefaults } from './setVTexecConfigDefaults'

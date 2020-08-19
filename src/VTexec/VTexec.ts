@@ -1,36 +1,50 @@
 import { ChildProcess } from 'child_process'
 
-import { VT, TerminalExecutor, VTPlatforms } from '../VT'
+import { VT, TerminalExecutor, PlatformsList } from '../VT'
 import {
-    VTexecOptions,
-    VTexecInclusion,
+    VTexecConfig,
+    SearchConfig,
 } from './types'
 
 import {
-    inclusionToList,
-    setInclusionDefaults,
+    searchConfigToList,
+    setVTexecConfigDefaults,
 } from './utils'
 
-import * as inclusionDefaults from './inclusionDefaults'
+import * as searchConfigDefaults from './searchConfigDefaults'
 
 
 /**This function designed to capture virtual terminal startup errors. */
 const omitError = (error: any) => null
 
+
+/**
+ * This function automatically find and run terminal with provided command. using **VTExecConfigDefaults** as second argument.
+ * @param command - String representation of command.
+ * @param vtExecConfig - Terminal searching algorithm configuration.
+ * @defaultValue
+ * ```
+ * { 
+ * 
+ * linux: linuxSearchConfigDefaults,
+ * 
+ * win32: win32SearchConfigDefaults,
+ * 
+ * default: PlatformsList
+ * 
+ * }```
+ */
+export default function VTexec(command: string): ChildProcess
 /**
  * This function automaticaly find and run terminal with provided command.
  * @param command - String representation of command.
- * @param options - Terminal searching algorithm configuration options.
- * @defaultValue `{ 
- * linux: linuxInclusionDefaults, win32: win32InclusionDefaults
- * }`
+ * @param vtExecConfig - Terminal searching algorithm configuration.
  */
-export default function VTexec(command: string): ChildProcess
-export default function VTexec(command: string, options?: VTexecOptions): ChildProcess
-export default function VTexec(command: string, options?: VTexecOptions): any {
-    const optionsWithDefaults = setInclusionDefaults(options)
+export default function VTexec(command: string, vtExecConfig: VTexecConfig): ChildProcess
+export default function VTexec(command: string, vtExecConfig?: VTexecConfig): any {
+    const vtExecConfigWithDefaults = setVTexecConfigDefaults(vtExecConfig)
 
-    function findVt(platform: VTPlatforms, vtList: string[]) {
+    function findVt(platform: PlatformsList, vtList: string[]) {
         const supportedVtMap = VT[platform] as { [key: string]: TerminalExecutor }
         for (const vt of vtList) {
             const terminalExecutor = supportedVtMap[vt]
@@ -41,7 +55,7 @@ export default function VTexec(command: string, options?: VTexecOptions): any {
                 termProc.on('error', omitError)
             }
         }
-        throw new Error(`No Virtual Terminal Emulator found for platform: ${platform}, with provided "VTexecInclusion" options!`)
+        throw new Error(`No Virtual Terminal Emulator found for platform: ${platform}, with provided "SearchConfig" vtExecConfig!`)
     }
 
     if (typeof command !== 'string') {
@@ -49,26 +63,26 @@ export default function VTexec(command: string, options?: VTexecOptions): any {
     }
     const platform = process.platform
 
-    if (optionsWithDefaults[platform] === null) throw new Error(`Platform: ${platform} is not supported.`)
+    if (vtExecConfigWithDefaults[platform] === null) throw new Error(`Platform: ${platform} is not supported.`)
 
     switch (platform) {
         case 'linux':
         case 'win32':
-            const vtList = inclusionToList(optionsWithDefaults[platform]! as Required<VTexecInclusion<VTPlatforms>>)
+            const vtList = searchConfigToList(vtExecConfigWithDefaults[platform]! as Required<SearchConfig<PlatformsList>>)
             return findVt(platform, vtList)
         default:
             break
     }
 
-    if (optionsWithDefaults.default === null) throw new Error(`Platform: ${platform} is not supported.`)
+    if (vtExecConfigWithDefaults.default === null) throw new Error(`Platform: ${platform} is not supported.`)
 
-    for (const fallbackPlatform of optionsWithDefaults.default) {
+    for (const fallbackPlatform of vtExecConfigWithDefaults.default) {
         if (Object.keys(VT).includes(fallbackPlatform)) {
-            const vtList = inclusionToList(inclusionDefaults[fallbackPlatform])
+            const vtList = searchConfigToList(searchConfigDefaults[fallbackPlatform])
             try {
                 return findVt(fallbackPlatform, vtList)
             } catch (err) { }
         }
     }
-    throw new Error(`No fallback Virtual Terminal Emulator found in platforms: ${optionsWithDefaults.default}`)
+    throw new Error(`No fallback Virtual Terminal Emulator found in platforms: ${vtExecConfigWithDefaults.default}`)
 }

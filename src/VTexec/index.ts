@@ -1,23 +1,23 @@
 import {
-    linux as linuxInclusionDefaults,
-    win32 as win32InclusionDefaults,
-} from './inclusionDefaults'
+    linux as linuxSearchConfigDefaults,
+    win32 as win32SearchConfigDefaults,
+} from './searchConfigDefaults'
 
-/****VTexecInclusion** default values for supported platforms. */
-const inclusionDefaults = {
-    /****VTexecInclusion** default value for linux. */
-    linux: linuxInclusionDefaults,
-    /****VTexecInclusion** default value for win32. */
-    win32: win32InclusionDefaults
+/****SearchConfig** default values for supported platforms. */
+const SearchConfigDefaults = {
+    /****SearchConfig** default value for linux. */
+    linux: linuxSearchConfigDefaults,
+    /****SearchConfig** default value for win32. */
+    win32: win32SearchConfigDefaults
 }
 
 
 export {
-    VTexecInclusion,
-    VTexecOptions,
+    SearchConfig,
+    VTexecConfig,
     LinuxTerminals,
     Win32Terminals,
 } from './types'
-export { inclusionDefaults }
+export { SearchConfigDefaults }
 export * as utils from './utils'
 export { default as VTexec } from './VTexec'
