@@ -6,6 +6,7 @@ import { spawn, SpawnOptions } from "child_process"
 const runXterm: TerminalExecutor = (command: string, {
     detached = true,
     stdio = 'ignore',
+    shell = false,
     ...restSpawnOptions
 } = {} as SpawnOptions, terminalArgs) => {
     let args = ['-hold', '-e', command,]
@@ -21,6 +22,7 @@ const runXterm: TerminalExecutor = (command: string, {
     const cmdProcess = spawn('xterm', args, {
         detached,
         stdio,
+        shell,
         ...restSpawnOptions
     })
     return cmdProcess

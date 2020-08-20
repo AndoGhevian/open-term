@@ -6,6 +6,7 @@ import { TerminalExecutor } from '../types'
 const runGuake: TerminalExecutor = (command: string, {
     detached = true,
     stdio = 'ignore',
+    shell = false,
     ...restSpawnOptions
 } = {} as SpawnOptions, terminalArgs) => {
     const cwd = process.cwd()
@@ -24,6 +25,7 @@ const runGuake: TerminalExecutor = (command: string, {
     const cmdProcess = spawn('guake', args, {
         detached,
         stdio,
+        shell,
         ...restSpawnOptions
     })
     return cmdProcess

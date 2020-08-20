@@ -6,7 +6,7 @@ import { TerminalExecutor } from "../types"
 /**
  * Running command from cmd.
  * 
- * **NOTE:** CMD terminal process additionally will start with `{ shell: true }` **SpawnOption**.
+ * **NOTE:** CMD terminal process will start with `{ shell: true }` **SpawnOption**.
  */
 const runCmd: TerminalExecutor = (command: string, {
     detached = true,
@@ -26,6 +26,7 @@ const runCmd: TerminalExecutor = (command: string, {
     const cmdProcess = spawn('cmd', args, {
         detached,
         stdio,
+        shell,
         ...restSpawnOptions
     })
     return cmdProcess
