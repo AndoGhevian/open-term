@@ -3,7 +3,7 @@ OpenTerm allows you to run arbitrary commands from [_Independent Terminal Emulat
 
 **Important:** Part of **seeing output** is crucial because in general terminals adhere to behavior of closing after command beeing executed, which not allow client to see the output.
 
-## Package Key Ascpects
+## Package Key Aspects
 1. The most important thing is the ability of **seeing output**, because in general terminals adhere to **behavior of closing** after command beeing executed, which not allow client to see the output.
 1. Terminal must be opened in a **separate window**, or at least in a **new Tab** of initial terminal, so that the output does not interfer with another process of working with terminal.
 
