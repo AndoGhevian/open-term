@@ -1,6 +1,6 @@
 {
   "name": "open-term",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "Start command in a new terminal and see the output.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
