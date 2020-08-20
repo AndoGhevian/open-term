@@ -227,4 +227,4 @@ Thats it.
 [pkg]: https://www.npmjs.com/package/pkg
 
 [VT-pkg]: https://github.com/AndoGhevian/VT-pkg
-[issues]: https://github.com/AndoGhevian/VT-pkg/issues
+[issues]: https://github.com/AndoGhevian/open-term/issues
