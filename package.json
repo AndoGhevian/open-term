@@ -1,6 +1,6 @@
 {
   "name": "open-term",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "description": "Start command in a new terminal and see the output.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -12,11 +12,12 @@
     "prepare": "npm run build"
   },
   "keywords": [
-    "open terminal",
     "openterm",
+    "open terminal",
     "terminal",
     "virtual terminal",
-    "terminal emulator"
+    "terminal emulator",
+    "pkg"
   ],
   "author": "Ando",
   "repository": {

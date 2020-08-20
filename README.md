@@ -1,13 +1,15 @@
 # OpenTerm
 OpenTerm allows you to run arbitrary commands from [_Independent Terminal Emulators_][VT] of target OS's and to **see the output**. It also provides configurable function which will automatically determine **Terminal** to run command from, depending on Target OS.
 
-**Important:** Part of **seeing output** is crucial because in general terminals adhere to behavior of closing after command beeing executed, which not allow client to see the output.
+### pkg Usage
+You can use **OpenTerm** with npm [pkg][pkg]. For more details see the [example][VT-pkg].
 
 ## Package Key Aspects
-1. The most important thing is the ability of **seeing output**, because in general terminals adhere to **behavior of closing** after command beeing executed, which not allow client to see the output.
+1. The most important thing is the ability of **seeing output**, because in general terminals adhere to **behavior of closing** after command finished execution, which not allow client to see the final output(s).
 1. Terminal must be opened in a **separate window**, or at least in a **new Tab** of initial terminal, so that the output does not interfer with another process of working with terminal.
 
 ## Table of Contest
+- [PKG Usage](#pkg-usage)
 - [Package Key Aspects](#package-key-aspects)
 - [Usage](#usage)
   - [VT](#part-1-vt)
@@ -68,7 +70,7 @@ If you provide any number of [terminalArgs](#vt-function-signiture) which not co
 By default terminals will be triggered with arguments ( if needed )
 that are responable for [key aspects of the package](#package-key-aspects). Therefore, We distinguish 3 types of arguments to avoid confusions:
 - **execArg:Static** Argument responsible for command execution on terminal startup, which takes provided command, e.g `-e command` for "_guake_"
-- **holdArg:Optional**: Argument which force terminal to not be closed after command is executed. e.g. `-hold` for "_xterm_".
+- **holdArg:Optional**: Argument which force terminal to not be closed after command finished execution. e.g. `-hold` for "_xterm_".
     > **NOTE:** Although this argument defines required behaviour for our package, **"terminals must not be closed after command executed"** - but in some cases, the terminal not provide arguments to control this behaviour, at the same time it behaves exactly as desired, so we stick with static and at same time desired behaviour. Good example is "_guake_".
     >
     > **Important:** Terminals that cannot achieve this behavior are not supported by package.
@@ -181,7 +183,7 @@ When searching terminal to use, **VTexec** first of all look for your platform i
         1. If **default** is not specified it will take as default [_PlatformsList_](#platformslist).
 _________________________
 
-#### Package Defaults
+## Package Defaults
 #### PlatformsList
 ```javascript 
 ['linux', 'win32']
@@ -221,3 +223,7 @@ Thats it.
 [ChildProcess]: https://nodejs.org/api/child_process.html#child_process_class_childprocess
 [unref]: https://nodejs.org/api/child_process.html#child_process_subprocess_unref
 [SpawnOptions]: https://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options
+
+[pkg]: https://www.npmjs.com/package/pkg
+
+[VT-pkg]: https://github.com/AndoGhevian/VT-pkg
