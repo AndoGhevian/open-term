@@ -3,11 +3,11 @@ import { TerminalExecutor } from '../types'
 
 
 /**Run command from KDE-Konsole Terminal. */
-const runKonsole: TerminalExecutor = (command: string, terminalArgs, {
+const runKonsole: TerminalExecutor = (command: string, {
     detached = true,
     stdio = 'ignore',
     ...restSpawnOptions
-} = {} as SpawnOptions) => {
+} = {} as SpawnOptions, terminalArgs) => {
     const cwd = process.cwd()
 
     let args = ['--hold', '--workdir', cwd]

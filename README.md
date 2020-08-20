@@ -51,16 +51,15 @@ When calling **VT** functions, as a result you getting [_ChildProcess_][ChildPro
 #### VT Function Signiture
 All **VT** functions has same signiture named _TerminalExecutor_: 
 ```typescript
-type TerminalExecutor = (command: string, terminalArgs?: string[], terminalSpawnOptions?: SpawnOptions) => ChildProcess
+type TerminalExecutor = (command: string, terminalSpawnOptions?: SpawnOptions, terminalArgs?: string[]) => ChildProcess
 ```
 - **_command_** - Defines command string to execute in opened terminal.
-- **_terminalArgs_** - Defines arguments to start terminal with. By default all terminals runed with 3 types of arguments each responsible for key behaviour of our package:
-    > For more details See [VT key args](#vt-key-args) and [Package Key Aspects](#package-key-aspects)
 - **_terminalSpawnOptions_** - Options to spawn terminal process with two defaults:
     - **_detached_** - `true`
     - **_stdio_** - `'ignore'`
-
-    For more details see [_SpawnOptions_][SpawnOptions].
+    >For more details see [_SpawnOptions_][SpawnOptions].
+- **_terminalArgs_** - Defines arguments to start terminal with. By default all terminals runed with 3 types of arguments each responsible for key behaviour of our package:
+    > For more details See [VT key args](#vt-key-args) and [Package Key Aspects](#package-key-aspects)
     
     
 If you provide any number of [terminalArgs](#vt-function-signiture) which not contain **_execArg_** ( See [VT key args](#vt-key-args) ) for terminal, then all default arguments will be disabled except **_execArg_**, and provided list will be used. If you want to disable all default arguments including **_execArg_**, you must specify **_execArg_**.

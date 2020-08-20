@@ -3,11 +3,11 @@ import { TerminalExecutor } from "../types"
 
 
 /**Run command from xfce4-terminal. */
-const runXfce: TerminalExecutor = (command: string, terminalArgs, {
+const runXfce: TerminalExecutor = (command: string, {
     detached = true,
     stdio = 'ignore',
     ...restSpawnOptions
-} = {} as SpawnOptions) => {
+} = {} as SpawnOptions, terminalArgs) => {
     const cwd = process.cwd()
 
     let args = ['--hold', '--working-directory', cwd]

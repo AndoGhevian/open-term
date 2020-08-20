@@ -3,11 +3,11 @@ import { TerminalExecutor } from '../types'
 
 
 /**Run command from Guake Terminal. */
-const runGuake: TerminalExecutor = (command: string, terminalArgs, {
+const runGuake: TerminalExecutor = (command: string, {
     detached = true,
     stdio = 'ignore',
     ...restSpawnOptions
-} = {} as SpawnOptions) => {
+} = {} as SpawnOptions, terminalArgs) => {
     const cwd = process.cwd()
 
     let args = ['--show', '-n', cwd]

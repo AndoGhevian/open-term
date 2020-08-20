@@ -3,11 +3,11 @@ import { spawn, SpawnOptions } from "child_process"
 
 
 /**Run command from xterm. */
-const runXterm: TerminalExecutor = (command: string, terminalArgs, {
+const runXterm: TerminalExecutor = (command: string, {
     detached = true,
     stdio = 'ignore',
     ...restSpawnOptions
-} = {} as SpawnOptions) => {
+} = {} as SpawnOptions, terminalArgs) => {
     let args = ['-hold', '-e', command,]
     if (terminalArgs) {
         args = [...terminalArgs]

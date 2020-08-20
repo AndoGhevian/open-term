@@ -6,17 +6,18 @@ import { TerminalExecutor } from "../types"
 /**
  * Running command from cmd.
  */
-const runCmd: TerminalExecutor = (command: string, terminalArgs, {
+const runCmd: TerminalExecutor = (command: string, {
     detached = true,
     stdio = 'ignore',
     ...restSpawnOptions
-} = {} as SpawnOptions) => {
+} = {} as SpawnOptions, terminalArgs) => {
     let args = ['/k']
     if (terminalArgs) {
         args = [...terminalArgs]
     }
 
-    args.push(command)
+    const execArgExists = args.find((arg) => !arg.startsWith('/'))
+    if (!execArgExists) args.push(command)
 
     // console.log(args)
     const cmdProcess = spawn('cmd', args, {
