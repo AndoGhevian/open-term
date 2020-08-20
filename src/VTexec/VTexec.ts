@@ -7,6 +7,7 @@ import {
 } from './types'
 
 import {
+    NotSupported,
     searchConfigToList,
     setVTexecConfigDefaults,
 } from './utils'
@@ -43,26 +44,30 @@ export default function VTexec(command: string, VTexecConfig?: VTexecConfig): an
                 termProc.on('error', omitError)
             }
         }
-        throw new Error(`No Virtual Terminal Emulator found for platform: ${platform}, with provided "SearchConfig" VTexecConfig!`)
+        throw new Error(`No Virtual Terminal Emulator found for platform: ${platform}, with provided "SearchConfig" in VTexecConfig!`)
     }
 
     if (typeof command !== 'string') {
-        throw new Error('Please provide command string to execute in VT.')
+        throw new Error('Please provide command string to execute in VT!')
     }
     const platform = process.platform
 
-    if (VTexecConfigWithDefaults[platform] === null) throw new Error(`Platform: ${platform} is not supported.`)
+    if (VTexecConfigWithDefaults[platform] === null) throw new NotSupported(`Platform: ${platform} is not supported!`)
 
     switch (platform) {
         case 'linux':
         case 'win32':
             const vtList = searchConfigToList(VTexecConfigWithDefaults[platform]! as Required<SearchConfig<PlatformsList>>)
-            return findVt(platform, vtList)
+            try {
+                return findVt(platform, vtList)
+            } catch (err) {
+                throw new NotSupported(err.message)
+            }
         default:
             break
     }
 
-    if (VTexecConfigWithDefaults.default === null) throw new Error(`Platform: ${platform} is not supported.`)
+    if (VTexecConfigWithDefaults.default === null) throw new NotSupported(`Platform: ${platform} is not supported!`)
 
     for (const fallbackPlatform of VTexecConfigWithDefaults.default) {
         if (Object.keys(VT).includes(fallbackPlatform)) {
@@ -72,5 +77,5 @@ export default function VTexec(command: string, VTexecConfig?: VTexecConfig): an
             } catch (err) { }
         }
     }
-    throw new Error(`No fallback Virtual Terminal Emulator found in platforms: ${VTexecConfigWithDefaults.default}`)
+    throw new NotSupported(`No fallback Virtual Terminal Emulator found in platforms: ${VTexecConfigWithDefaults.default}!`)
 }

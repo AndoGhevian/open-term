@@ -1,3 +1,8 @@
+import { utils } from './VTexec'
+
+/**Determines the impossibility of opening a terminal in the platform. */
+export const NotSupported = utils.NotSupported
+
 export {
     VT,
     PlatformsList,
