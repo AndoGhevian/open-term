@@ -57,6 +57,7 @@ type TerminalExecutor = (command: string, terminalSpawnOptions?: SpawnOptions, t
 - **_terminalSpawnOptions_** - Options to spawn terminal process with two defaults:
     - **_detached_** - `true`
     - **_stdio_** - `'ignore'`
+    - **_shell_** - platform === `'win32'` ? `true` : `false`
     >For more details see [_SpawnOptions_][SpawnOptions].
 - **_terminalArgs_** - Defines arguments to start terminal with. By default all terminals runed with 3 types of arguments each responsible for key behaviour of our package:
     > For more details See [VT key args](#vt-key-args) and [Package Key Aspects](#package-key-aspects)

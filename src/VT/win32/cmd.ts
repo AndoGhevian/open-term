@@ -5,10 +5,13 @@ import { TerminalExecutor } from "../types"
 
 /**
  * Running command from cmd.
+ * 
+ * **NOTE:** CMD terminal process additionally will start with `{ shell: true }` **SpawnOption**.
  */
 const runCmd: TerminalExecutor = (command: string, {
     detached = true,
     stdio = 'ignore',
+    shell = true,
     ...restSpawnOptions
 } = {} as SpawnOptions, terminalArgs) => {
     let args = ['/k']
