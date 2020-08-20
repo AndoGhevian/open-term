@@ -93,7 +93,7 @@ Currently supported Terminal Emulators listed by Platforms:
 2. windows
     - [x] cmd - `VT.win32.cmd`
 
-You can of course easily extend this list if you want.
+For more terminals and platforms support, consider to [open an issue][issues].
 _________________________
 
 ### Part 2: VTexec
@@ -227,3 +227,4 @@ Thats it.
 [pkg]: https://www.npmjs.com/package/pkg
 
 [VT-pkg]: https://github.com/AndoGhevian/VT-pkg
+[issues]: https://github.com/AndoGhevian/VT-pkg/issues
