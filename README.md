@@ -2,7 +2,13 @@
 OpenTerm allows you to run arbitrary commands from [_Independent Terminal Emulators_][VT] of target OS's and to **see the output**. It also provides configurable function which will automatically determine **Terminal** to run command from, depending on Target OS.
 
 **Important:** Part of **seeing output** is crucial because in general terminals adhere to behavior of closing after command beeing executed, which not allow client to see the output.
+
+## Package Key Ascpects
+1. The most important thing is the ability of **seeing output**, because in general terminals adhere to **behavior of closing** after command beeing executed, which not allow client to see the output.
+1. Terminal must be opened in a **separate window**, or at least in a **new Tab** of initial terminal, so that the output does not interfer with another process of working with terminal.
+
 ## Table of Contest
+- [Package Key Aspects](#package-key-aspects)
 - [Usage](#usage)
   - [VT](#part-1-vt)
   - [VTexec](#part-2-vtexec)
@@ -20,6 +26,7 @@ This package consists of **2 parts**.
 ##### Table of Contest
 - [Usage](#part-1-vt)
 - [VT Functions Signiture](#vt-function-signiture)
+- [VT key args](#vt-key-args)
 - [Supported Terminals](#supported-terminals)
 -------------------------
 
@@ -35,6 +42,7 @@ First Part exported as **"VT"** consists of distributed by platforms functions f
     const { VT } = require('open-term')
     VT.win32.cmd('help') // Runs "help" command in cmd.
     ```
+
 When calling **VT** functions, as a result you getting [_ChildProcess_][ChildProcess] instance representing spawned terminal. If you want you can [_unref_][unref] it to allow current nodejs process to exit independently of the spawned terminal.
 
 
@@ -45,14 +53,7 @@ type TerminalExecutor = (command: string, terminalArgs?: string[], terminalSpawn
 ```
 - **_command_** - Defines command string to execute in opened terminal.
 - **_terminalArgs_** - Defines arguments to start terminal with. By default all terminals runed with 3 types of arguments each responsible for key behaviour of our package:
-    - **execArg:Static** Argument responsible for command execution, which takes provided command, e.g `-e command` for "_guake_"
-    - **holdArg:Optional**: Argument which force terminal to not be closed after command is executed. e.g. `-hold` for "_xterm_".
-    > **NOTE:** Although this argument defines required behaviour for our package, **"terminals must not be closed after command executed"** - but in some cases, the terminal not provide arguments to control this behaviour, at the same time it behaves exactly as desired, so we stick with static and at same time desired behaviour. Good example is "_guake_".
-    >
-    > **Important:** Terminals that cannot achieve this behavior are not supported by package.
-    - **PopupArgs:Optional**: This argument(s) force to open terminal in a new window, or at least in a new tab and show it immediately, e.g. `--show -n .` for "_guake_".
-    > **NOTE:** If there is a way, terminal will be opened in a new window. If not, it will be opened in a new tab and shown. Good example is " _guake_", when theres no way to open a new window, but we can open a new tab, and show "_guake_" at startup.
-    >
+    > For more details See [VT key args](#vt-key-args) and [Package Key Aspects](#package-key-aspects)
 - **_terminalSpawnOptions_** - Options to spawn terminal process with two defaults:
     - **_detached_** - `true`
     - **_stdio_** - `'ignore'`
@@ -60,7 +61,23 @@ type TerminalExecutor = (command: string, terminalArgs?: string[], terminalSpawn
     For more details see [_SpawnOptions_][SpawnOptions].
     
     
-If you provide any number of **"terminalArgs"** which not contain **_execArg_** for terminal, then all default arguments will be disabled except **_execArg_**, and provided list will be used. If you want to disable all default arguments including **_execArg_**, you must specify **_execArg_**.
+If you provide any number of [terminalArgs](#vt-function-signiture) which not contain **_execArg_** ( See [VT key args](#vt-key-args) ) for terminal, then all default arguments will be disabled except **_execArg_**, and provided list will be used. If you want to disable all default arguments including **_execArg_**, you must specify **_execArg_**.
+
+
+#### VT key args
+By default terminals will be triggered with arguments ( if needed )
+that are responable for [key aspects of the package](#package-key-aspects). Therefore, We distinguish 3 types of arguments to avoid confusions:
+- **execArg:Static** Argument responsible for command execution on terminal startup, which takes provided command, e.g `-e command` for "_guake_"
+- **holdArg:Optional**: Argument which force terminal to not be closed after command is executed. e.g. `-hold` for "_xterm_".
+    > **NOTE:** Although this argument defines required behaviour for our package, **"terminals must not be closed after command executed"** - but in some cases, the terminal not provide arguments to control this behaviour, at the same time it behaves exactly as desired, so we stick with static and at same time desired behaviour. Good example is "_guake_".
+    >
+    > **Important:** Terminals that cannot achieve this behavior are not supported by package.
+- **PopupArgs:Optional**: This argument(s) force to open terminal in a new window, or at least in a new tab and show it immediately, e.g. `--show -n .` for "_guake_".
+    > **NOTE:** If there is a way, terminal will be opened in a new window. If not, it will be opened in a new tab and shown. Good example is " _guake_", when theres no way to open a new window, but we can open a new tab, and show "_guake_" at startup.
+    >
+> **"arg:Static"** - means that this argument will be allways provided by package.
+>
+>**"arg:Optional"** - means that this argument is not necesserily will be presented depending on terminal existing opportunities.
 
 You can find information about available arguments for particular terminal on its **man page** or in **help**.
 
