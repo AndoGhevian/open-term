@@ -140,7 +140,7 @@ VTexec('help', {
     openbsd: {
         terms: ['openbsdTerm', 'else']
     }
-}) // Force to throw an error: 'NotSupported' for 'win32' and 'openbsd'.
+})
 ```
 
 Here, as any **VT** Terminal function, it return's [_ChildProcess_][ChildProcess] instance. To be precise, it uses the same [_VT_](#part-1-vt) functions under the hood.
