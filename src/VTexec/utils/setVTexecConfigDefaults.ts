@@ -27,14 +27,14 @@ function setWin32SearchConfigDefaults(win32SearchConfig: SearchConfig<'win32'>):
  * This function Set Default values for all missing properties of VTexecConfig.
  * @returns **VTexecConfig** with filled default values.
  */
-export default function setVTexecConfigDefaults(options = {} as VTexecConfig): Required<VTexecConfig> {
+export default function setVTexecConfigDefaults(config = {} as VTexecConfig): Required<VTexecConfig> {
     let {
         linux = linuxSearchConfigDefaults,
         win32 = win32SearchConfigDefaults,
-        default: vtFallbackPlatforms = Object.keys(VT) as PlatformsList[], // undefined - lookall, null - throw NotFound, array - look in array
-        ...restOptions
-    } = options
+        default: VTFallbackPlatforms = Object.keys(VT) as PlatformsList[], // undefined - lookall, null - throw NotFound, array - look in array
+        ...restConfig
+    } = config
     if (linux !== null) setLinuxSearchConfigDefaults(linux)
     if (win32 !== null) setWin32SearchConfigDefaults(win32)
-    return { linux, win32, default: vtFallbackPlatforms, ...restOptions }
+    return { linux, win32, default: VTFallbackPlatforms, ...restConfig }
 }

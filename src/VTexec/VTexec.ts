@@ -19,20 +19,8 @@ const omitError = (error: any) => null
 
 
 /**
- * This function automatically find and run terminal with provided command. using **VTExecConfigDefaults** as second argument.
+ * This function automatically find and run terminal with provided command.
  * @param command - String representation of command.
- * @param VTexecConfig - Terminal searching algorithm configuration.
- * @defaultValue
- * ```
- * { 
- * 
- * linux: linuxSearchConfigDefaults,
- * 
- * win32: win32SearchConfigDefaults,
- * 
- * default: PlatformsList
- * 
- * }```
  */
 export default function VTexec(command: string): ChildProcess
 /**

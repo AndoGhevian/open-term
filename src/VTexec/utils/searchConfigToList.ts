@@ -2,9 +2,9 @@ import { SearchConfig } from "../types"
 import { PlatformsList } from "../../VT/types"
 
 /**
- * Convert's **SearchConfig** options with allready applied defaults to terminal-names list.
- * @param searchConfig - **SearchConfig** options object with no missing properties.
- * @returns **terms** list with applied exclusions and sorted by specified priority.
+ * Convert's **SearchConfig** with allready applied defaults to terminal-names list.
+ * @param searchConfig - **SearchConfig** object with no missing properties.
+ * @returns **terms** list with applied exclusions and sorted by specified priorities.
  */
 export default function searchConfigToList(searchConfig: Required<SearchConfig<PlatformsList>>) {
     const sortedList: string[] = []
