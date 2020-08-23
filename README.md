@@ -44,6 +44,7 @@ First Part exported as **"VT"** consists of distributed by platforms functions f
     const { VT } = require('open-term')
     VT.win32.cmd('help') // Runs "help" command in cmd.
     ```
+> Be Sure you have appropriate terminal in your **PATH** or consider to use [_VTexec_](#part-2-vtexec) whch will automatically determinal terminal to use.
 
 When calling **VT** functions, as a result you getting [_ChildProcess_][ChildProcess] instance representing spawned terminal. If you want you can [_unref_][unref] it to allow current nodejs process to exit independently of the spawned terminal.
 
@@ -54,7 +55,7 @@ All **VT** functions has same signiture named _TerminalExecutor_:
 type TerminalExecutor = (command: string, terminalSpawnOptions?: SpawnOptions, terminalArgs?: string[]) => ChildProcess
 ```
 - **_command_** - Defines command string to execute in opened terminal.
-- **_terminalSpawnOptions_** - Options to spawn terminal process with two defaults:
+- **_terminalSpawnOptions_** - Options to spawn terminal process with **3 defaults**:
     - **_detached_** - `true`
     - **_stdio_** - `'ignore'`
     - **_shell_** - platform === `'win32'` ? `true` : `false`
